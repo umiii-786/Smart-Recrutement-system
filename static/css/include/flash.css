@@ -1,0 +1,14 @@
+.message{
+    width: 70%;
+    margin: auto;
+    /* text-align: center; */
+    padding: 15px 50px;
+}
+.success{
+    border: 1px solid #19ff0070;
+    background: #139a1f66;
+}
+.error{
+    border: 1px solid #ff000070;
+    background: #9a131366
+}

@@ -1,0 +1,32 @@
+
+    .sidebar {
+        width: 260px;
+        background: rgba(255, 255, 255, 0.02);
+        border-right: 1px solid var(--glass-border);
+        backdrop-filter: blur(20px);
+    }
+
+    select>option{
+        color: black;
+    }
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        color: #94a3b8;
+        transition: all 0.2s;
+        margin-bottom: 4px;
+    }
+
+    .nav-item.active {
+        background: rgba(99, 102, 241, 0.1);
+        color: white;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .nav-item:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+    }

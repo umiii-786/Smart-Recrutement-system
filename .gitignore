@@ -1,0 +1,7 @@
+myenv
+uploads
+videos
+model
+.env
+.vscode/
+__pycache__/

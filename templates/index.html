@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireAI | Next-Gen Recruitment Ecosystem</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/index.css') }}?v=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    {% include "includes/navbar.html" %}
+    {% include "includes/flash.html" %}
+
+
+    <!-- Hero Section -->
+    <header class="relative pt-6 pb-20 px-6 overflow-hidden">
+        <div class="hero-glow"></div>
+        <div class="blob" style="top: 10%; right: 10%;"></div>
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-wider text-indigo-400 uppercase bg-indigo-500/10 border border-indigo-500/20 rounded-full">
+                Revolutionizing Careers with Intelligence
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight leading-tight">
+                The Bridge Between <span class="gradient-text">Exceptional Talent</span> and Top Companies
+            </h1>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                Automate your hiring funnel with AI-driven virtual interviews, automated resume parsing, and objective skill scorecards.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <div class="glass-card p-2 rounded-full flex gap-2">
+                    <button class="px-8 py-4 btn-primary rounded-full font-bold flex items-center gap-2">
+                        <i class="fas fa-user-tie"></i> For Candidates
+                    </button>
+                    <button class="px-8 py-4 bg-transparent hover:bg-white/5 rounded-full font-bold transition-colors flex items-center gap-2">
+                        <i class="fas fa-building"></i> For Companies
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Powerful Features for Modern Hiring</h2>
+                <p class="text-gray-400">Eliminating bias and manual labor from the recruitment process.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8">
+                    <div class="feature-icon"><i class="fas fa-file-invoice"></i></div>
+                    <h3 class="text-xl font-bold mb-4">Smart Resume Parsing</h3>
+                    <p class="text-gray-400 leading-relaxed">Our AI extracts projects, certificates, internships, and academic records (SSC/HSC) instantly from any PDF.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card p-8">
+                    <div class="feature-icon"><i class="fas fa-video"></i></div>
+                    <h3 class="text-xl font-bold mb-4">Virtual AI Interviews</h3>
+                    <p class="text-gray-400 leading-relaxed">Conduct automated video or text-based interviews with dynamic questions tailored to the job profile.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card p-8">
+                    <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3 class="text-xl font-bold mb-4">Data-Driven Scoring</h3>
+                    <p class="text-gray-400 leading-relaxed">Rank candidates based on a weighted average of experience, skills, and interview performance metrics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Section: How it Works -->
+    <section id="workflow" class="py-24 bg-white/5 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl font-bold mb-8">Streamlined <span class="gradient-text">Candidate Journey</span></h2>
+                    <div class="space-y-8">
+                        <div class="flex gap-6">
+                            <div class="w-12 h-12 rounded-full border border-indigo-500 flex items-center justify-center shrink-0 text-indigo-500 font-bold">1</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Upload & Apply</h4>
+                                <p class="text-gray-400">Users upload their resume. Our engine scans for internships, marks, and skill certifications.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-12 h-12 rounded-full border border-indigo-500 flex items-center justify-center shrink-0 text-indigo-500 font-bold">2</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Virtual Assessment</h4>
+                                <p class="text-gray-400">AI conducts a deep-dive interview session checking for technical and soft skills.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-12 h-12 rounded-full border border-indigo-500 flex items-center justify-center shrink-0 text-indigo-500 font-bold">3</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Auto-Ranking</h4>
+                                <p class="text-gray-400">Companies view a filtered list of top-tier talent ready for final selection.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="glass-card p-6 border-indigo-500/30 overflow-hidden shadow-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h5 class="font-bold">Recruiter Dashboard</h5>
+                            <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Live AI Filtering</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center">JD</div>
+                                    <div>
+                                        <p class="text-sm font-bold">John Doe</p>
+                                        <p class="text-[10px] text-gray-500">HSC: 92% | 3 Projects</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-indigo-400 font-bold">98% Match</p>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between opacity-60">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">AS</div>
+                                    <div>
+                                        <p class="text-sm font-bold">Alice Smith</p>
+                                        <p class="text-[10px] text-gray-500">SSC: 88% | 1 Internship</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-gray-400 font-bold">72% Match</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blob" style="bottom: -20px; left: -20px; width: 200px; height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-6">
+        <div class="max-w-5xl mx-auto glass-card p-12 text-center border-indigo-500/20">
+            <h2 class="text-4xl font-extrabold mb-6">Ready to find your <span class="gradient-text">Future Team</span>?</h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">Join 500+ companies already using HireAI to automate their recruitment workflow.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="px-10 py-4 btn-primary rounded-full font-bold shadow-lg shadow-indigo-500/20">Get Started for Free</button>
+                <button class="px-10 py-4 bg-white/10 hover:bg-white/20 rounded-full font-bold transition-all">Schedule a Demo</button>
+            </div>
+        </div>
+    </section>
+
+   
+    {% include "includes/footer.html" %}
+
+
+    <script src="{{ url_for('static', path='js/index.js') }}"></script>  
+
+</body>
+</html>

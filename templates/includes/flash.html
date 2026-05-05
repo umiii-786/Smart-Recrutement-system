@@ -1,0 +1,20 @@
+{% if flash %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/include/flash.css') }}?v=1">
+
+<div>
+    {% if flash.type == 'success' %}
+        <div class="success message">{{ flash.msg }}</div>
+    {% else %}
+        <div class="error message">{{ flash.msg }}</div>
+    {% endif %}
+</div>
+
+<script>
+    setTimeout(() => {
+        const msg = document.querySelector('.message');
+        if (msg) {
+            msg.remove();
+        }
+    }, 3000);
+</script>
+{% endif %}

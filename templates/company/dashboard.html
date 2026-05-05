@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Dashboard | HireAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="{{ url_for('static', path='css/company/dashboard.css') }}?v=1">
+</head>
+
+<body class="flex">
+
+    <div class="dashboard-glow"></div>
+
+    {% include "includes/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="flex-1 p-4 md:p-8 lg:p-10">
+        
+        {% include "includes/company_navbar.html" %}
+        {% include "includes/flash.html" %}
+
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="stat-icon bg-indigo-500/10 text-indigo-400">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <span class="text-[10px] text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded">+2 this
+                        week</span>
+                </div>
+                <h3 class="text-2xl font-bold">12</h3>
+                <p class="text-gray-500 text-xs">Active Job Posts</p>
+            </div>
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="stat-icon bg-purple-500/10 text-purple-400">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <span class="text-[10px] text-indigo-400 font-bold bg-indigo-400/10 px-2 py-1 rounded">+128
+                        today</span>
+                </div>
+                <h3 class="text-2xl font-bold">842</h3>
+                <p class="text-gray-500 text-xs">Total Applications</p>
+            </div>
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="stat-icon bg-blue-500/10 text-blue-400">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <span class="text-[10px] text-gray-400 font-bold bg-white/5 px-2 py-1 rounded">Processing...</span>
+                </div>
+                <h3 class="text-2xl font-bold">45</h3>
+                <p class="text-gray-500 text-xs">AI Interviews Pending</p>
+            </div>
+            <div class="glass-card p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="stat-icon bg-orange-500/10 text-orange-400">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="text-[10px] text-orange-400 font-bold bg-orange-400/10 px-2 py-1 rounded">Top 5%</span>
+                </div>
+                <h3 class="text-2xl font-bold">18</h3>
+                <p class="text-gray-500 text-xs">Shortlisted Candidates</p>
+            </div>
+        </div>
+
+        <!-- Recent Job Postings -->
+        <div class="glass-card overflow-hidden">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                <h2 class="text-lg font-bold">Active Postings</h2>
+                <div class="flex gap-2">
+                    <button
+                        class="text-xs bg-white/5 px-3 py-1.5 rounded-lg hover:bg-white/10 transition">Filter</button>
+                    <button
+                        class="text-xs bg-white/5 px-3 py-1.5 rounded-lg hover:bg-white/10 transition">Export</button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="text-[11px] text-gray-500 uppercase tracking-wider bg-white/2">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">Job Title</th>
+                            <th class="px-6 py-4 font-semibold">Applied</th>
+                            <th class="px-6 py-4 font-semibold">Interviewed</th>
+                            <th class="px-6 py-4 font-semibold">Status</th>
+                            <th class="px-6 py-4 font-semibold">Posted Date</th>
+                            <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <!-- Job Item 1 -->
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="px-6 py-5">
+                                <div class="font-bold text-sm">Senior UI/UX Designer</div>
+                                <div class="text-[10px] text-gray-500 mt-0.5">Full-time • Remote</div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-semibold">42</span>
+                                    <div class="flex -space-x-2">
+                                        <div
+                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-indigo-500 text-[8px] flex items-center justify-center">
+                                            JD</div>
+                                        <div
+                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-purple-500 text-[8px] flex items-center justify-center">
+                                            AS</div>
+                                        <div
+                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-gray-700 text-[8px] flex items-center justify-center">
+                                            +39</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 text-sm font-medium text-gray-400">12 / 42</td>
+                            <td class="px-6 py-5">
+                                <span class="status-pill status-active">Active</span>
+                            </td>
+                            <td class="px-6 py-5 text-xs text-gray-500">Oct 24, 2023</td>
+                            <td class="px-6 py-5 text-right">
+                                <button
+                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
+                                <button class="text-gray-500 hover:text-white"><i
+                                        class="fas fa-ellipsis-v"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Job Item 2 -->
+                        <tr class="hover:bg-white/[0.02] transition">
+                            <td class="px-6 py-5">
+                                <div class="font-bold text-sm">Backend Developer (Node.js)</div>
+                                <div class="text-[10px] text-gray-500 mt-0.5">Contract • On-site</div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-semibold">156</span>
+                                    <div class="flex -space-x-2">
+                                        <div
+                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-green-500 text-[8px] flex items-center justify-center">
+                                            MK</div>
+                                        <div
+                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-gray-700 text-[8px] flex items-center justify-center">
+                                            +155</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 text-sm font-medium text-gray-400">88 / 156</td>
+                            <td class="px-6 py-5">
+                                <span class="status-pill status-active">Active</span>
+                            </td>
+                            <td class="px-6 py-5 text-xs text-gray-500">Oct 20, 2023</td>
+                            <td class="px-6 py-5 text-right">
+                                <button
+                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
+                                <button class="text-gray-500 hover:text-white"><i
+                                        class="fas fa-ellipsis-v"></i></button>
+                            </td>
+                        </tr>
+                        <!-- Job Item 3 -->
+                        <tr class="hover:bg-white/[0.02] transition opacity-60">
+                            <td class="px-6 py-5">
+                                <div class="font-bold text-sm">QA Automation Engineer</div>
+                                <div class="text-[10px] text-gray-500 mt-0.5">Part-time • Hybrid</div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="text-sm font-semibold">89</div>
+                            </td>
+                            <td class="px-6 py-5 text-sm font-medium text-gray-400">89 / 89</td>
+                            <td class="px-6 py-5">
+                                <span class="status-pill status-closed">Closed</span>
+                            </td>
+                            <td class="px-6 py-5 text-xs text-gray-500">Sep 12, 2023</td>
+                            <td class="px-6 py-5 text-right">
+                                <button
+                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">Review</button>
+                                <button class="text-gray-500 hover:text-white"><i
+                                        class="fas fa-ellipsis-v"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 bg-white/[0.01] flex justify-center border-t border-white/5">
+                <button class="text-xs text-gray-500 hover:text-white transition font-medium">View All Postings <i
+                        class="fas fa-chevron-right ml-1"></i></button>
+            </div>
+        </div>
+
+
+     
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Virtual Interview | HireAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/job_interview.css') }}?v=1">
+
+</head>
+
+<body>
+
+    <!-- Header -->
+    <nav class="h-16 flex items-center justify-between px-8 border-b border-white/5 bg-black/20 backdrop-blur-md">
+        <div class="flex items-center gap-2">
+            <div class="w-6 h-6 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded"></div>
+            <span class="text-lg font-bold">HireAI <span class="text-gray-500 font-medium text-sm ml-2">| AI Interview
+                    Module</span></span>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-1 bg-red-500/10 rounded-full border border-red-500/20">
+                <div class="recording-pulse"></div>
+                <span class="text-[10px] font-bold text-red-500 uppercase tracking-widest">Live Recording</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Interview Area -->
+    <main class="flex-1 p-6 flex flex-col lg:flex-row gap-6 overflow-hidden">
+
+        <!-- Left: Question & AI Agent -->
+        <div class="w-full lg:w-1/3 flex flex-col gap-6">
+            <!-- Question Display -->
+            <div class="glass-card p-8 flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="question-number"
+                        class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Question 0 of 5</span>
+                    <div class="relative w-12 h-12">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle class="text-white/5" stroke-width="8" stroke="currentColor" fill="transparent"
+                                r="40" cx="50" cy="50" />
+                            <circle id="timer-circle" class="text-indigo-500 timer-ring" stroke-width="8"
+                                stroke-dasharray="251.2" stroke-dashoffset="0" stroke-linecap="round"
+                                stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span id="timer-text" class="text-xs font-bold">30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="question-text" class="text-2xl font-bold leading-tight mb-6">
+                </h2>
+
+                <div class="mt-auto space-y-4">
+                    <div class="p-4 bg-indigo-500/5 rounded-2xl border border-indigo-500/10">
+                        <p class="text-xs text-indigo-300 font-medium">
+                            <i class="fas fa-lightbulb mr-2"></i> Tip: Focus on the "STAR" method (Situation, Task,
+                            Action, Result).
+                        </p>
+                    </div>
+                    <button id="next-btn" onclick="handleNextQuestion()"
+                        class="w-full py-4 btn-primary rounded-2xl font-bold flex items-center justify-center gap-2">
+                        Next Question <i class="fas fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Camera View -->
+        <div class="flex-1 relative">
+            <div id="camera-overlay"
+                class="absolute inset-0 z-20 glass-card flex flex-col items-center justify-center text-center p-10">
+                <div
+                    class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mb-6 border border-indigo-500/20">
+                    <i class="fas fa-video text-2xl text-indigo-400"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Camera Permission Required</h3>
+                <p class="text-gray-400 text-sm max-w-xs mb-8">We need access to your camera and microphone to conduct
+                    the virtual AI interview.</p>
+                <button onclick="startInterview()" class="px-10 py-4 btn-primary rounded-2xl font-bold shadow-xl">
+                    Allow & Start Interview
+                </button>
+            </div>
+
+            <div class="gradient-border w-full h-full">
+                <video id="video-preview" class="video-container" autoplay muted playsinline></video>
+
+                <!-- Bottom Status Bar -->
+                <div
+                    class="absolute bottom-6 left-6 right-6 flex items-center justify-between z-10 px-6 py-4 bg-black/40 backdrop-blur-md rounded-2xl border border-white/10">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-microphone text-green-400 text-sm"></i>
+                            <div class="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                <div id="audio-meter" class="h-full bg-green-400 w-1/2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        Encrypted Connection • AI Monitoring Active
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        const job_id = {{ job_id | tojson }};
+        const questions = {{ questions | tojson }};
+        console.log("questions are", questions)
+        /*  const questions = ['Given a Pandas DataFrame, how do you identify rows with missing values in a specific column and then drop those rows?',
+           'In Scikit-learn, what is the purpose of the `fit_transform` method, and when would you use it instead of `fit` followed by `transform`?',
+            'When building a REST API for model inference, what HTTP method is typically used to send new data for prediction, and what is its primary characteristic?', 
+            'What is the main difference between a convolutional layer and a fully connected layer in a neural network, regarding their primary function?',
+             "How would you write a basic SQL query to select all entries from a 'logs' table where the 'severity' column is 'ERROR'?"]*/
+    </script>
+
+    <script>
+        let stream;
+        let mediaRecorder;
+        let chunks = [];
+        let currentQuestionIndex = 0;
+        let timeLeft = 30;
+        let timerInterval;
+        let interview_Started = false;
+        let isRecording = false;
+
+        // ================= START INTERVIEW =================
+        async function startInterview() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
+                });
+
+                document.getElementById('video-preview').srcObject = stream;
+                document.getElementById('camera-overlay').classList.add('hidden');
+
+                interview_Started = true;
+
+                startQuestion(currentQuestionIndex);
+
+            } catch (err) {
+                alert("Please allow camera and microphone access.");
+                console.error(err);
+            }
+        }
+
+        // ================= QUESTION CONTROL =================
+        function startQuestion(index) {
+
+            if (index >= questions.length) {
+                finishInterview();
+                return;
+            }
+
+            document.getElementById('question-number').innerText =
+                `Question ${index + 1} of ${questions.length}`;
+
+            document.getElementById('question-text').innerText =
+                questions[index];
+
+            startTimer();
+            startRecording(index);
+        }
+
+        // ================= TIMER =================
+        function startTimer() {
+            clearInterval(timerInterval);
+
+            timeLeft = 30;
+            updateTimerUI();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerUI();
+
+                if (timeLeft <= 0) {
+                    handleNextQuestion();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const timerText = document.getElementById('timer-text');
+            const circle = document.getElementById('timer-circle');
+
+            timerText.innerText = timeLeft;
+
+            const offset = 251.2 - (251.2 * timeLeft) / 30;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        // ================= RECORDING =================
+        function startRecording(questionIndex) {
+
+            chunks = [];
+            isRecording = true;
+
+            mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'video/webm'
+            });
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) chunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = async () => {
+
+                isRecording = false;
+
+                const blob = new Blob(chunks, { type: 'video/webm' });
+
+                // 🔥 WAIT for upload BEFORE moving forward
+                await sendToBackend(blob, currentQuestionIndex);
+
+                // after upload complete → move next
+                currentQuestionIndex++;
+                startQuestion(currentQuestionIndex);
+            };
+
+            mediaRecorder.start();
+        }
+
+        // ================= STOP RECORDING =================
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                mediaRecorder.stop();
+            }
+        }
+
+        // ================= QUESTION FLOW CONTROL =================
+        function handleNextQuestion() {
+
+            if (!interview_Started || isRecording === false) return;
+
+            clearInterval(timerInterval);
+
+            stopRecording(); // this triggers onstop → upload → next question
+        }
+
+        // ================= BACKEND UPLOAD =================
+        async function sendToBackend(blob, qIndex) {
+
+            console.log(`Uploading Q${qIndex} video...`);
+
+            const formData = new FormData();
+
+            formData.append('video', blob, `answer_q${qIndex}.webm`);
+            formData.append('question_no', qIndex);
+
+            try {
+                await fetch(`/job/${job_id}/interview`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log(`Upload complete Q${qIndex}`);
+
+            } catch (error) {
+                console.error("Upload failed:", error);
+            }
+        }
+
+        // ================= FINISH =================
+        function finishInterview() {
+
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
+            document.body.innerHTML = `
+            <div class="h-screen flex items-center justify-center p-6 text-center">
+                 <div class="glass-card p-12 max-w-md space-y-6"> 
+                    <div class="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto text-3xl">
+                         <i class="fas fa-check-circle"></i>
+                         </div> <h2 class="text-3xl font-bold">Interview Completed</h2>
+                          <p class="text-gray-400">Your video responses have been successfully uploaded and are being analyzed by our AI agents. You will receive a notification once the scoring is complete.</p>
+                         <a href='/job/${job_id}/progress'  class="w-full py-4 btn-primary rounded-xl font-bold">View Progress</a>
+                         </div> </div>`;
+        }
+    </script>
+</body>
+
+</html>
