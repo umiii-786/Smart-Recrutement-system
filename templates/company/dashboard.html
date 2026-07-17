@@ -95,91 +95,42 @@
                     </thead>
                     <tbody class="divide-y divide-white/5">
                         <!-- Job Item 1 -->
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="px-6 py-5">
-                                <div class="font-bold text-sm">Senior UI/UX Designer</div>
-                                <div class="text-[10px] text-gray-500 mt-0.5">Full-time • Remote</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm font-semibold">42</span>
-                                    <div class="flex -space-x-2">
-                                        <div
-                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-indigo-500 text-[8px] flex items-center justify-center">
-                                            JD</div>
-                                        <div
-                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-purple-500 text-[8px] flex items-center justify-center">
-                                            AS</div>
-                                        <div
-                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-gray-700 text-[8px] flex items-center justify-center">
-                                            +39</div>
+                         {% for job in jobs %}
+                            <tr class="hover:bg-white/[0.02] transition">
+                                <td class="px-6 py-5">
+                                    <div class="font-bold text-sm">{{ job.title }}</div>
+                                    <div class="text-[10px] text-gray-500 mt-0.5">{{ job.job_type }}</div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-semibold">42</span>
+                                        <div class="flex -space-x-2">
+                                            <div
+                                                class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-indigo-500 text-[8px] flex items-center justify-center">
+                                                JD</div>
+                                            <div
+                                                class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-purple-500 text-[8px] flex items-center justify-center">
+                                                AS</div>
+                                            <div
+                                                class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-gray-700 text-[8px] flex items-center justify-center">
+                                                +39</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-400">12 / 42</td>
-                            <td class="px-6 py-5">
-                                <span class="status-pill status-active">Active</span>
-                            </td>
-                            <td class="px-6 py-5 text-xs text-gray-500">Oct 24, 2023</td>
-                            <td class="px-6 py-5 text-right">
-                                <button
-                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
-                                <button class="text-gray-500 hover:text-white"><i
-                                        class="fas fa-ellipsis-v"></i></button>
-                            </td>
-                        </tr>
-                        <!-- Job Item 2 -->
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="px-6 py-5">
-                                <div class="font-bold text-sm">Backend Developer (Node.js)</div>
-                                <div class="text-[10px] text-gray-500 mt-0.5">Contract • On-site</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm font-semibold">156</span>
-                                    <div class="flex -space-x-2">
-                                        <div
-                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-green-500 text-[8px] flex items-center justify-center">
-                                            MK</div>
-                                        <div
-                                            class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-gray-700 text-[8px] flex items-center justify-center">
-                                            +155</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-400">88 / 156</td>
-                            <td class="px-6 py-5">
-                                <span class="status-pill status-active">Active</span>
-                            </td>
-                            <td class="px-6 py-5 text-xs text-gray-500">Oct 20, 2023</td>
-                            <td class="px-6 py-5 text-right">
-                                <button
-                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
-                                <button class="text-gray-500 hover:text-white"><i
-                                        class="fas fa-ellipsis-v"></i></button>
-                            </td>
-                        </tr>
-                        <!-- Job Item 3 -->
-                        <tr class="hover:bg-white/[0.02] transition opacity-60">
-                            <td class="px-6 py-5">
-                                <div class="font-bold text-sm">QA Automation Engineer</div>
-                                <div class="text-[10px] text-gray-500 mt-0.5">Part-time • Hybrid</div>
-                            </td>
-                            <td class="px-6 py-5">
-                                <div class="text-sm font-semibold">89</div>
-                            </td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-400">89 / 89</td>
-                            <td class="px-6 py-5">
-                                <span class="status-pill status-closed">Closed</span>
-                            </td>
-                            <td class="px-6 py-5 text-xs text-gray-500">Sep 12, 2023</td>
-                            <td class="px-6 py-5 text-right">
-                                <button
-                                    class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">Review</button>
-                                <button class="text-gray-500 hover:text-white"><i
-                                        class="fas fa-ellipsis-v"></i></button>
-                            </td>
-                        </tr>
+                                </td>
+                                <td class="px-6 py-5 text-sm font-medium text-gray-400">12 / 42</td>
+                                <td class="px-6 py-5">
+                                    <span class="status-pill status-active">Active</span>
+                                </td>
+                                <td class="px-6 py-5 text-xs text-gray-500">13 Nov 25</td>
+                                <td class="px-6 py-5 text-right">
+                                    <a
+                                    href="/job/{{ job.id }}"  class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
+                                    <a class="text-gray-500 hover:text-white"><i
+                                            class="fas fa-ellipsis-v"></i></button>
+                                </td>
+                            </tr>
+                         {% endfor %}
+                      
                     </tbody>
                 </table>
             </div>
@@ -195,5 +146,6 @@
     </main>
 
 </body>
+
 
 </html>

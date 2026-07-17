@@ -7,7 +7,7 @@ from database.user import create_user,get_user
 from database.candidate import create_candidate,get_candidate
 from database.company import create_company
 from database.candidate_job import get_candidate_job,create_candidate_job,update_candidate_job,update_candidate_video_path,execte_query
-from database.job import create_job,get_all_jobs,get_jobs_by_id,update_job
+from database.job import create_job,get_all_jobs,get_jobs_by_id,update_job,get_jobs_by_company
 from models.candidate import CandidateModel
 from models.company import CompanyModel
 from models.jobs import jobModel 
@@ -206,7 +206,7 @@ def show_jobs(request:Request):
     # else:
         # return RedirectResponse('/login')
 
-@app.get('/jobs/{job_id}')
+@app.get('/job/{job_id}')
 def particular_job(request:Request,job_id:str,check: bool = Depends(checkApplied)):
     job=get_jobs_by_id(job_id)
     print(job)
@@ -251,6 +251,7 @@ def apply_to_particular_job(request:Request,job_id:str,
         
     else:
         return RedirectResponse(f'/job/{job_id}',status_code=303)
+
 
 def load_resume(path:str):
     loader = PyPDFLoader(path)
@@ -468,7 +469,7 @@ def find_particular_interview_result(request:Request,job_id:str):
         job = result['success'][0]
         raw_questions = job.get('questions')
         questions=json.loads(raw_questions)
-
+        print(questions)
         videos_path=record['interview_video_paths']
         videos_path=videos_path.split(',')
         ratings=[]
@@ -476,6 +477,7 @@ def find_particular_interview_result(request:Request,job_id:str):
         for i, v_path in enumerate(videos_path):
             base_name = f"{job_id}_cid_{candidate_id}_q{i}"
             audio_path = f"audios/{base_name}.mp3"
+            print(i,'==>',questions[i])
             rating,hardskill_score = asyncio.run(handle_interview_hard_and_soft(video_url=v_path,audio_url=audio_path,question=questions[i]))
             ratings.append(rating)
             hardskill_scores.append(hardskill_score)
@@ -565,7 +567,12 @@ def getFinalResult(request:Request,job_id:str):
 @app.get('/dashboard')
 def companyPage(request:Request):
     if request.state.user and request.state.user['role']=='Company':
-        return templates.TemplateResponse(request=request, name="company/dashboard.html")
+        cpId=request.state.user['assosiated_with']
+        jobs=get_jobs_by_company(company_id=cpId)
+        print(jobs)
+        return templates.TemplateResponse(request=request, name="company/dashboard.html",context={
+            'jobs':jobs
+        })
     else:
         return RedirectResponse('/login')
 
