@@ -16,7 +16,43 @@ def get_candidate_job(candidate_id: str, job_id: str):
     finally:
         conn.close()
 
+def get_placed_candidates_by_job(job_id: str):
+    conn = get_connection()
 
+    try:
+        with conn.cursor() as cursor:
+
+            sql = f"""
+                SELECT
+                    u.name,
+                    u.email,
+                    cj.result,
+                    cj.probabilities,
+                    cj.ats_score,
+                    cj.softskill
+                FROM candidate_job AS cj
+                INNER JOIN user AS u
+                    ON cj.candidate_id = u.candidate_id
+                WHERE cj.job_id = '{job_id}'
+                AND cj.result = 'placed';
+            """
+
+            print(sql)
+
+            cursor.execute(sql)
+            result = cursor.fetchall()
+
+            return {"success": result}
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+    finally:
+        conn.close()
+        
 def create_candidate_job(candidate_id: str, job_id: str, resume_path: str):
     conn = get_connection()
     try:

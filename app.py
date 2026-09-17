@@ -6,7 +6,7 @@ from pydantic import EmailStr
 from database.user import create_user,get_user
 from database.candidate import create_candidate,get_candidate
 from database.company import create_company
-from database.candidate_job import get_candidate_job,create_candidate_job,update_candidate_job,update_candidate_video_path,execte_query
+from database.candidate_job import get_candidate_job,get_placed_candidates_by_job,create_candidate_job,update_candidate_job,update_candidate_video_path,execte_query
 from database.job import create_job,get_all_jobs,get_jobs_by_id,update_job,get_jobs_by_company
 from models.candidate import CandidateModel
 from models.company import CompanyModel
@@ -31,7 +31,7 @@ import time
 import asyncio
 import numpy as np
 import requests
-
+import re
 
 app=FastAPI()
 app.mount('/static',StaticFiles(directory='static'),name="static")
@@ -45,9 +45,11 @@ templates=Jinja2Templates(directory='templates')
 async def convert_token_into_user(request: Request, call_next):
     request.state.user = None  # default
     token = request.cookies.get('token')
+    print('token is ',token)
     if token:
         try:
             payload = verify_token(token=token)
+            print('payload is ',payload)
             request.state.user = payload  # store user info
         except JWTError:
             request.state.user = None
@@ -149,11 +151,13 @@ def register_company(
             "role":'Company',
             "assosiated_with":data['id'],
         }
-        del data['email'],data['password']
+        del data['email'], data['password']
+        # print(user)
+        # print(data)
         create_user(**user)
         create_company(**data)
-        del data['password']
-        token=create_access_token(**data)
+        del user['password']
+        token=create_access_token(user)
         response=RedirectResponse(url='/dashboard',status_code=303)
         response.set_cookie('token',token)
         response.set_cookie('flash',value=json.dumps({"msg": "Registered Your Company Successful", "type": "success"}))
@@ -209,18 +213,25 @@ def show_jobs(request:Request):
 @app.get('/job/{job_id}')
 def particular_job(request:Request,job_id:str,check: bool = Depends(checkApplied)):
     job=get_jobs_by_id(job_id)
-    print(job)
-    print(check)
     query=f"select count(job_id) from candidate_job where job_id='{job_id}';"
     no_of_applications=execte_query(query)
     no_of_applications=no_of_applications['success'][0]['count(job_id)']
+
+
+    qualified_candidates = []
+    print(request.state.user)
+    if request.state.user['role'] == "Company":
+        qualified_candidates=get_placed_candidates_by_job(job_id=job_id)
+        
+        print(qualified_candidates)
     return templates.TemplateResponse(request=request,name='each_job.html',
                                       context={
                                         "user":request.state.user,
                                         "job":job['success'][0],
                                         "check":check,
                                         "no_of_applications":no_of_applications,
-                                        "flash":request.state.flash
+                                        "flash":request.state.flash,
+                                        "qualified_candidates":qualified_candidates
                                       })
 
 
@@ -258,7 +269,9 @@ def load_resume(path:str):
     pages = loader.load()
     content=""
     for page in pages:
-        content=content+page.page_content
+        cleaned = re.sub(r'(?<=\w) (?=\w)', '', page.page_content)
+        content=content+cleaned
+    print(content)
     return content
 
 
@@ -274,8 +287,8 @@ def check_job_progress(request: Request, job_id: str,applied:bool=Depends(checkA
             raise HTTPException(status_code=500, detail="Invalid Job-Id")
 
         jd = job['success'][0]['description']
-        print('job founded')
         # Get Candidate Job Record
+
         job_and_candidate = get_candidate_job(job_id=job_id, candidate_id=candidate_id)
         if not job_and_candidate['success']:
             raise HTTPException(status_code=500, detail="Invalid Candidate Id")
@@ -288,6 +301,7 @@ def check_job_progress(request: Request, job_id: str,applied:bool=Depends(checkA
         if record['ats_score'] is None:
             resume_path = record['resume_path']
             resume = load_resume(resume_path)
+            print(resume)
             print("finding_ats")
             ats_score = find_ats(
                 resume_text=resume,
@@ -553,13 +567,6 @@ def getFinalResult(request:Request,job_id:str):
         return RedirectResponse(f'/job/{job_id}')
 
     
-    
-    
-    
-
-
-
-
 
 
 # Company Routes
@@ -585,7 +592,6 @@ def show_create_job_page(request:Request):
         })
     else:
         return RedirectResponse('/login')
-
 
 
 @app.post('/company/create_job')

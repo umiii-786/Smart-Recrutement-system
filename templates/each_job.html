@@ -110,28 +110,15 @@
                     Check Progress
             </a>
       {% endif %}
+
+      {% if user['role']=='Company' %}
+
+      
+      {% endif %}
+
     </div>
 
-    
-    <!-- Success Modal (Hidden)
-    <div id="success-modal"
-        class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm hidden">
-        <div class="glass-card max-w-md w-full p-10 text-center space-y-6">
-            <div
-                class="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto text-3xl">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div>
-                <h2 class="text-2xl font-bold">Application Received!</h2>
-                <p class="text-gray-400 mt-2">The AI is currently analyzing your profile. You will be notified of the
-                    next steps shortly.</p>
-            </div>
-            <button onclick="window.location.href='jobs.html'"
-                class="w-full py-4 bg-white/5 hover:bg-white/10 rounded-xl font-bold transition">
-                Return to Jobs
-            </button>
-        </div>
-    </div> -->
+ 
 
     <script>
 

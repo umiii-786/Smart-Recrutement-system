@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,11 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/job_progress.css') }}?v=1">
 
 </head>
+
 <body>
 
     <div class="hero-glow"></div>
-<!-- 
+    <!-- 
     <nav class="h-20 flex items-center justify-between px-6 md:px-12 border-b border-white/5 bg-black/20 backdrop-blur-md sticky top-0 z-50 mb-10">
         <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
             <div class="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-lg"></div>
@@ -27,21 +29,26 @@
     {% include "includes/navbar.html" %}
 
     <div class="max-w-4xl mx-auto px-6 pb-20">
-        
+
         <!-- Job Context Card -->
         <div class="glass-card p-6 mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
-                <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400">Application Progress</span>
-                <h1 class="text-2xl font-extrabold mt-1">Senior Full Stack Developer</h1>
-                <p class="text-gray-500 text-sm">TechVision Inc. • Applied on Oct 28, 2023</p>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-indigo-400">Application
+                    Progress</span>
+                <h1 class="text-2xl font-extrabold mt-1">{{ job.title }}</h1>
+                <p class="text-gray-500 text-sm">TechVision Inc. • Applied on {{ job.created_at }}</p>
             </div>
             <div class="flex items-center gap-3">
-                {% if job_candidate.result  %}
-                    <span class="px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-xs text-green-400 font-bold">Status: Completely Processed</span>
-                
+                {% if job_candidate.result %}
+                <span
+                    class="px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-xs text-green-400 font-bold">Status:
+                    Completely Processed</span>
+
                 {% else %}
-                    <span class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-xs text-indigo-400 font-bold">Status: Under Review</span>
-                    
+                <span
+                    class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-xs text-indigo-400 font-bold">Status:
+                    Under Review</span>
+
                 {% endif %}
             </div>
         </div>
@@ -67,7 +74,7 @@
         </div>
 
         <div class="space-y-8">
-            
+
             <!-- Section 1: ATS Analysis -->
             <div id="ats-section" class="glass-card p-8 transition-all duration-500">
                 <div class="flex flex-col md:flex-row gap-8 items-center">
@@ -76,18 +83,37 @@
                             <i class="fas fa-search-plus text-indigo-400"></i> Phase 1: Resume ATS Scoring
                         </h3>
                         <p class="text-gray-400 text-sm leading-relaxed">
-                            Our AI will scan your resume against the Job Description to identify keyword matches, technical alignment, and formatting compatibility.
+                            Our AI will scan your resume against the Job Description to identify keyword matches,
+                            technical alignment, and formatting compatibility.
                         </p>
-                        <button id="btn-ats" onclick="runATSAnalysis()" class="btn-action px-8 py-3 rounded-xl text-sm font-bold pulse-animation">
+
+                        {% if ats_score>= 0.5 %}
+
+                        <h3 class="text-2xl font-extrabold mt-1 text-center" style="color:#22c55e;">Congratulations!
+                            Your resume has been shortlisted for the next phase.<br>
+                            Your similarity score is {{ ats_score}}.
+                        </h3>
+                        {% else %}
+                        <h3 class="text-2xl font-extrabold mt-1 text-center" style="color: rgb(237, 22, 22);">Your
+                            resume does not meet our job requirements. Your similarity score is {{ ats_score }}, while
+                            the minimum required score is 0.5.</h3>
+                        {% endif %}
+
+                        <button id="btn-ats" onclick="runATSAnalysis()"
+                            class="btn-action px-8 py-3 rounded-xl text-sm font-bold pulse-animation">
                             Analyze Resume
                         </button>
                     </div>
                     <!-- ATS Result (Hidden initially) -->
-                    <div id="ats-result" class="hidden flex flex-col items-center text-center p-6 bg-white/5 rounded-3xl border border-white/10 w-full md:w-64">
+                    <div id="ats-result"
+                        class="hidden flex flex-col items-center text-center p-6 bg-white/5 rounded-3xl border border-white/10 w-full md:w-64">
                         <div class="relative w-32 h-32 mb-4">
                             <svg class="w-full h-full" viewBox="0 0 100 100">
-                                <circle class="text-white/5" stroke-width="8" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50"/>
-                                <circle id="ats-circle" class="text-indigo-500 score-ring" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50"/>
+                                <circle class="text-white/5" stroke-width="8" stroke="currentColor" fill="transparent"
+                                    r="40" cx="50" cy="50" />
+                                <circle id="ats-circle" class="text-indigo-500 score-ring" stroke-width="8"
+                                    stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round"
+                                    stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
                             </svg>
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <span class="text-2xl font-extrabold" id="ats-score-text">0%</span>
@@ -99,27 +125,31 @@
                 </div>
             </div>
 
-       
-            {% if ats_score>= 0.01 %}
-          
+
+            {% if ats_score>= 0.5 %}
+
             <!-- Section 2: Virtual Interview -->
-            <div id="interview-section" class="glass-card p-8 opacity-50 pointer-events-none transition-all duration-500">
+            <div id="interview-section"
+                class="glass-card p-8 opacity-50 pointer-events-none transition-all duration-500">
                 <div class="flex flex-col md:flex-row gap-8 items-center">
                     <div class="flex-1 space-y-4">
                         <h3 class="text-xl font-bold flex items-center gap-2">
                             <i class="fas fa-microphone-alt text-purple-400"></i> Phase 2: AI Virtual Interview
                         </h3>
                         <p class="text-gray-400 text-sm leading-relaxed" style="margin-bottom: 20px;">
-                            Enter a simulated interview environment where our AI agent evaluates your communication, problem-solving, and domain expertise.
+                            Enter a simulated interview environment where our AI agent evaluates your communication,
+                            problem-solving, and domain expertise.
                         </p>
                         {% if job_candidate.interview_video_paths %}
-                            <a id="btn-interview" href="/job/{{job.id}}/interview/result" class=" mt-4 btn-action px-8 py-3 rounded-xl text-sm font-bold">
-                                Checkout Result
-                            </a>
+                        <a id="btn-interview" href="/job/{{job.id}}/interview/result"
+                            class=" mt-4 btn-action px-8 py-3 rounded-xl text-sm font-bold">
+                            Checkout Result
+                        </a>
                         {% else %}
-                             <a id="btn-interview" href="/job/{{job.id}}/interview" class=" mt-4 btn-action px-8 py-3 rounded-xl text-sm font-bold">
-                                Start AI Interview
-                            </a>
+                        <a id="btn-interview" href="/job/{{job.id}}/interview"
+                            class=" mt-4 btn-action px-8 py-3 rounded-xl text-sm font-bold">
+                            Start AI Interview
+                        </a>
                         {% endif %}
                     </div>
                     <!-- Interview Result (Hidden initially) -->
@@ -128,14 +158,16 @@
                             <p class="text-[10px] uppercase text-gray-500 font-bold mb-2">Soft Skills</p>
                             <div class="text-xl font-extrabold text-indigo-400" id="soft-skill-score">0/10</div>
                             <div class="w-full bg-white/10 h-1 rounded-full mt-2 overflow-hidden">
-                                <div id="soft-skill-bar" class="bg-indigo-400 h-full transition-all duration-1000" style="width: 0%"></div>
+                                <div id="soft-skill-bar" class="bg-indigo-400 h-full transition-all duration-1000"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                         <div class="p-4 bg-white/5 rounded-2xl border border-white/10 text-center">
                             <p class="text-[10px] uppercase text-gray-500 font-bold mb-2">Hard Skills</p>
                             <div class="text-xl font-extrabold text-purple-400" id="hard-skill-score">0/10</div>
                             <div class="w-full bg-white/10 h-1 rounded-full mt-2 overflow-hidden">
-                                <div id="hard-skill-bar" class="bg-purple-400 h-full transition-all duration-1000" style="width: 0%"></div>
+                                <div id="hard-skill-bar" class="bg-purple-400 h-full transition-all duration-1000"
+                                    style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
@@ -143,44 +175,72 @@
             </div>
 
             <!-- Section 3: Final Prediction -->
-            <div id="prediction-section" class="glass-card p-8 opacity-50 pointer-events-none transition-all duration-500 border-dashed">
+            <div id="prediction-section"
+                class="glass-card p-8 opacity-50 pointer-events-none transition-all duration-500 border-dashed">
                 <div class="text-center space-y-6">
-                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto text-gray-600 text-2xl">
+                    <div
+                        class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto text-gray-600 text-2xl">
                         <i class="fas fa-crystal-ball"></i>
                     </div>
                     <div class="max-w-md mx-auto">
                         <h3 class="text-xl font-bold">Final Placement Prediction</h3>
-                        <p class="text-gray-500 text-sm mt-2">Based on your cumulative performance, academic data, and AI assessment scores.</p>
+                        <p class="text-gray-500 text-sm mt-2">Based on your cumulative performance, academic data, and
+                            AI assessment scores.</p>
                     </div>
-                    <a id="btn-predict" href="/job/{{job.id}}/finalResult" class="btn-action px-10 py-4 rounded-2xl font-bold text-lg">
+                    <a id="btn-predict" href="/job/{{job.id}}/finalResult"
+                        class="btn-action px-10 py-4 rounded-2xl font-bold text-lg">
                         Generate Prediction
                     </a>
 
                     <!-- Final Result Modal/Card (Hidden) -->
-                    <div id="final-result" class="hidden mt-8 p-10 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-3xl border border-white/10 animate-bounce-subtle">
+                    <div id="final-result"
+                        class="hidden mt-8 p-10 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-3xl border border-white/10 animate-bounce-subtle">
                         <div id="placement-icon" class="text-6xl mb-6">🏆</div>
                         <h2 id="placement-title" class="text-3xl font-black mb-2">Highly Placed!</h2>
                         <p id="placement-desc" class="text-gray-400 text-sm max-w-sm mx-auto">
-                            Congratulations! Your profile matches 94% of the requirements and your interview performance is in the top 5th percentile.
+                            Congratulations! Your profile matches 94% of the requirements and your interview performance
+                            is in the top 5th percentile.
                         </p>
                     </div>
                 </div>
             </div>
-         
-                
-            {% else %}
-                <h1 class="text-2xl font-extrabold mt-1 text-center" style="color: rgb(237, 22, 22);">Your Resume Havn't Meet Our Job Requirement</h1>
+
             {% endif %}
-            
+
+
 
         </div>
     </div>
-    <script>
-         const job_cand = {{  job_candidate | tojson }};
-         console.log(job_cand)
-    </script>
+    
+<!-- Processing Loader -->
+<div id="processing-loader"
+    class="hidden fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div class="flex flex-col items-center">
+        <div class="w-14 h-14 border-4 border-white/10 border-t-indigo-400 rounded-full animate-spin"></div>
+        <p id="processing-text" class="mt-4 text-sm font-semibold text-indigo-300">
+            Processing...
+        </p>
+    </div>
+    </div><!-- Processing Loader -->
 
-    <script>
+    <div id="processing-loader"
+        class="hidden fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="flex flex-col items-center">
+            <div class="w-14 h-14 border-4 border-white/10 border-t-indigo-400 rounded-full animate-spin"></div>
+            <p id="processing-text" class="mt-4 text-sm font-semibold text-indigo-300">
+                Processing...
+            </p>
+        </div>
+    </div>
+  
+</body>
+
+<script>
+        const job_cand = {{ job_candidate | tojson }};
+        console.log(job_cand)
+</script>
+<script>
+      
         // Simulation Helper: ATS Analysis
         function runATSAnalysis() {
             const btn = document.getElementById('btn-ats');
@@ -190,6 +250,7 @@
             const step1 = document.getElementById('step-1-ui');
             const nextSection = document.getElementById('interview-section');
 
+
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Analyzing...';
             btn.disabled = true;
             btn.classList.remove('pulse-animation');
@@ -197,21 +258,23 @@
             setTimeout(() => {
                 result.classList.remove('hidden');
                 btn.classList.add('hidden');
-                
+
                 // Animation of score
-                const offset = 251.2 - (251.2 * job_cand['ats_score']) / 100;
+                console.log(job_cand['ats_score'])
+                const percentage = (job_cand['ats_score']) * 100;
+                const offset = 251.2 - (251.2 * percentage) / 100;
                 circle.style.strokeDashoffset = offset;
-                
+
                 let count = 0;
                 const interval = setInterval(() => {
-                    if(count >= job_cand['ats_score']) clearInterval(interval);
-                    scoreText.innerText = count + '%';
+                    if (count >= job_cand['ats_score']) clearInterval(interval);
+                    scoreText.innerText = percentage.toFixed(1) + '%';
                     count++;
                 }, 20);
 
                 // Update Step
                 step1.classList.add('step-completed');
-                
+
                 // Unlock Phase 2
                 nextSection.classList.remove('opacity-50', 'pointer-events-none');
                 document.getElementById('btn-interview').classList.add('pulse-animation');
@@ -229,7 +292,7 @@
             const hardBar = document.getElementById('hard-skill-bar');
             const step2 = document.getElementById('step-2-ui');
             const nextSection = document.getElementById('prediction-section');
-
+            
             btn.innerHTML = '<i class="fas fa-video fa-spin mr-2"></i> AI Evaluating...';
             btn.disabled = true;
             btn.classList.remove('pulse-animation');
@@ -249,7 +312,7 @@
 
                 // Update Step
                 step2.classList.add('step-completed');
-                
+
                 // Unlock Phase 3
                 nextSection.classList.remove('opacity-50', 'pointer-events-none');
                 document.getElementById('step-3-ui').classList.add('step-active');
@@ -272,16 +335,16 @@
 
                 // Logic for "Placed" vs "Not Placed" (Simulation)
                 const isPlaced = job_cand['result']; // Hardcoded for demo success path
-                const decision= job_cand['result']==0?"NotPlaced":"Placed"
+                const decision = job_cand['result'] == 0 ? "NotPlaced" : "Placed"
                 console.log(isPlaced)
-                if (isPlaced==1) {
+                if (isPlaced == 1) {
                     document.getElementById('placement-icon').innerText = '🚀';
                     document.getElementById('placement-title').innerText = `Placement: ${decision}`;
                     document.getElementById('placement-title').classList.add('text-green-400');
                     document.getElementById('placement-desc').innerText = `Based on your high ATS score and strong interview performance, our AI predicts a ${job_cand['probablities'][1]}% probability of hire.`;
                 } else {
-                    document.getElementById('placement-icon').innerText = '📈';
-                    document.getElementById('placement-title').innerText = 'Placement: IMPROVING';
+                    document.getElementById('placement-icon').innerHTML = `📈<br>${decision}`;
+                    document.getElementById('placement-title').innerText = 'Placement:NEED IMPROVEMENT';
                     document.getElementById('placement-title').classList.add('text-orange-400');
                     document.getElementById('placement-desc').innerText = 'You are a strong candidate, but we suggest focusing on your Hard Skills to reach the 90%+ probability threshold.';
                 }
@@ -291,13 +354,13 @@
         }
         runATSAnalysis()
         console.log(job_cand['interview_video_paths'])
-        if (job_cand['softskill'] && job_cand['amptitude_score'] ){
+        if (job_cand['softskill'] && job_cand['amptitude_score']) {
             runInterviewAnalysis()
         }
-        if (job_cand['result'] && job_cand['probablities']){
+        if (job_cand['result'] && job_cand['probablities']) {
             runFinalPrediction()
         }
-        
+
     </script>
-</body>
+
 </html>

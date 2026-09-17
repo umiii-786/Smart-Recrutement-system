@@ -35,7 +35,7 @@
         <!-- Left: Question & AI Agent -->
         <div class="w-full lg:w-1/3 flex flex-col gap-6">
             <!-- Question Display -->
-            <div class="glass-card p-8 flex-1 flex flex-col">
+            <div class="glass-card p-8 flex-1 flex flex-col relative">
                 <div class="flex justify-between items-center mb-6">
                     <span id="question-number"
                         class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Question 0 of 5</span>
@@ -69,6 +69,16 @@
                     </button>
                 </div>
             </div>
+            <!-- Question Upload Loader -->
+
+            <div id="question-loader"
+                class="hidden absolute inset-0 z-30 bg-black/40 backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center">
+                <div class="w-12 h-12 border-4 border-white/10 border-t-indigo-400 rounded-full animate-spin"></div>
+                <p id="question-loader-text" class="mt-4 text-sm font-semibold text-indigo-300">
+                    Uploading your answer...
+                </p>
+            </div>
+
         </div>
 
         <!-- Right: Camera View -->
@@ -112,11 +122,7 @@
         const job_id = {{ job_id | tojson }};
         const questions = {{ questions | tojson }};
         console.log("questions are", questions)
-        /*  const questions = ['Given a Pandas DataFrame, how do you identify rows with missing values in a specific column and then drop those rows?',
-           'In Scikit-learn, what is the purpose of the `fit_transform` method, and when would you use it instead of `fit` followed by `transform`?',
-            'When building a REST API for model inference, what HTTP method is typically used to send new data for prediction, and what is its primary characteristic?', 
-            'What is the main difference between a convolutional layer and a fully connected layer in a neural network, regarding their primary function?',
-             "How would you write a basic SQL query to select all entries from a 'logs' table where the 'severity' column is 'ERROR'?"]*/
+        
     </script>
 
     <script>
@@ -130,6 +136,18 @@
         let isRecording = false;
 
         // ================= START INTERVIEW =================
+
+        function showQuestionLoader(message = "Uploading your answer...") {
+            const loader = document.getElementById("question-loader");
+            const loaderText = document.getElementById("question-loader-text");
+
+            loaderText.innerText = message;
+            loader.classList.remove("hidden");
+        }
+
+        function hideQuestionLoader() {
+            document.getElementById("question-loader").classList.add("hidden");
+        }
         async function startInterview() {
             try {
                 stream = await navigator.mediaDevices.getUserMedia({
@@ -247,6 +265,7 @@
         async function sendToBackend(blob, qIndex) {
 
             console.log(`Uploading Q${qIndex} video...`);
+            showQuestionLoader("Uploading your answer...");
 
             const formData = new FormData();
 
@@ -263,6 +282,9 @@
 
             } catch (error) {
                 console.error("Upload failed:", error);
+
+            } finally {
+                hideQuestionLoader();
             }
         }
 
@@ -280,7 +302,7 @@
                          <i class="fas fa-check-circle"></i>
                          </div> <h2 class="text-3xl font-bold">Interview Completed</h2>
                           <p class="text-gray-400">Your video responses have been successfully uploaded and are being analyzed by our AI agents. You will receive a notification once the scoring is complete.</p>
-                         <a href='/job/${job_id}/progress'  class="w-full py-4 btn-primary rounded-xl font-bold">View Progress</a>
+                         <a href='/job/${job_id}/progress'  class="w-full px-2 py-4 btn-primary rounded-xl font-bold">View Progress</a>
                          </div> </div>`;
         }
     </script>

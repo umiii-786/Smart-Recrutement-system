@@ -87,7 +87,7 @@
                         <tr>
                             <th class="px-6 py-4 font-semibold">Job Title</th>
                             <th class="px-6 py-4 font-semibold">Applied</th>
-                            <th class="px-6 py-4 font-semibold">Interviewed</th>
+                            <!-- <th class="px-6 py-4 font-semibold">Interviewed</th> -->
                             <th class="px-6 py-4 font-semibold">Status</th>
                             <th class="px-6 py-4 font-semibold">Posted Date</th>
                             <th class="px-6 py-4 font-semibold text-right">Actions</th>
@@ -103,8 +103,8 @@
                                 </td>
                                 <td class="px-6 py-5">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-sm font-semibold">42</span>
-                                        <div class="flex -space-x-2">
+                                        <span class="text-sm font-semibold">{{ job.submitted_applications }}</span>
+                                        <!-- <div class="flex -space-x-2">
                                             <div
                                                 class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-indigo-500 text-[8px] flex items-center justify-center">
                                                 JD</div>
@@ -113,18 +113,18 @@
                                                 AS</div>
                                             <div
                                                 class="w-5 h-5 rounded-full border border-[#0a0a0c] bg-gray-700 text-[8px] flex items-center justify-center">
-                                                +39</div>
-                                        </div>
+                                                </div>
+                                        </div> -->
                                     </div>
                                 </td>
-                                <td class="px-6 py-5 text-sm font-medium text-gray-400">12 / 42</td>
+                                <!-- <td class="px-6 py-5 text-sm font-medium text-gray-400">12 / 42</td> -->
                                 <td class="px-6 py-5">
                                     <span class="status-pill status-active">Active</span>
                                 </td>
-                                <td class="px-6 py-5 text-xs text-gray-500">13 Nov 25</td>
+                                <td class="px-6 py-5 text-xs text-gray-500">{{ job.created_at }}</td>
                                 <td class="px-6 py-5 text-right">
                                     <a
-                                    href="/job/{{ job.id }}"  class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
+                                    href="/job/{{ job.id }}?view=company_view"  class="text-indigo-400 hover:text-indigo-300 text-xs font-bold mr-4">View</button>
                                     <a class="text-gray-500 hover:text-white"><i
                                             class="fas fa-ellipsis-v"></i></button>
                                 </td>

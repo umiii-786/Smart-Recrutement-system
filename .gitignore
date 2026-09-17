@@ -5,4 +5,5 @@ model
 .env
 .vscode/
 __pycache__/
-audio
+audios
+check.py
